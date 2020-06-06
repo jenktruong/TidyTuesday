@@ -1,0 +1,17 @@
+---
+title: 'Tidy Tuesday: Animal Crossing'
+author: "Jen T. (@jenjentro)"
+date: "6/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Attach packages ----
+
+library(tidyverse)
+library(janitor)
+library(here)
+```
+
