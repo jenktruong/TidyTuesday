@@ -1,7 +1,7 @@
 ---
 title: 'Tidy Tuesday: Animal Crossing'
 author: "Jen T. (@jenjentro)"
-date: "6/5/2020"
+date: "7/20/2020"
 output: html_document
 ---
 
@@ -27,4 +27,23 @@ villagers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 # I'll probably just focus on the villagers data though
 ```
 
-Hello!
+Hello! Let's create a graph of villager personality types.
+
+```{r}
+
+# Villager graph
+ggplot(data = villagers, aes(x = personality)) + # X variable will be personality
+  geom_histogram(aes(fill = personality), # Change fill color of bars by personality type
+                 stat = "count", # Use count as y variable
+                 show.legend = FALSE) + # Don't show legend
+  labs(x = "Villager Personality", # Change axis titles
+       y = "Number of Villagers",
+       title = "ACNH Villager Personalities") + # Give graph title
+  # geom_text((label = count(personality)) + # Add data labels
+  theme_classic() + # Change appearance of graph
+  theme(
+    plot.title = element_text(hjust = 0.5) # Move graph title to center
+  )
+
+```
+
