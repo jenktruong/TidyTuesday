@@ -13,6 +13,10 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(janitor)
 library(here)
+library(cowplot)
+library(magick)
+
+theme_set(theme_cowplot())
 ```
 
 ```{r Reading in ACNH Data}
@@ -32,18 +36,27 @@ Hello! Let's create a graph of villager personality types.
 ```{r}
 
 # Villager graph
-ggplot(data = villagers, aes(x = personality)) + # X variable will be personality
+acnh_graph <- ggplot(data = villagers, aes(x = personality)) + # X variable will be personality
   geom_histogram(aes(fill = personality), # Change fill color of bars by personality type
                  stat = "count", # Use count as y variable
                  show.legend = FALSE) + # Don't show legend
   labs(x = "Villager Personality", # Change axis titles
        y = "Number of Villagers",
        title = "ACNH Villager Personalities") + # Give graph title
-  # geom_text((label = count(personality)) + # Add data labels
+  scale_fill_brewer(palette = "Dark2") + # Change fill colors of histogram bars
+  # geom_text(label = ..count..) + # Add data labels
+  coord_flip() + # Flip x and y axes
   theme_classic() + # Change appearance of graph
   theme(
     plot.title = element_text(hjust = 0.5) # Move graph title to center
   )
+
+acnh_graph
+
+# Add villager thumbnails to graph
+ggdraw() +
+  draw_image("https://villagerdb.com/images/villagers/thumb/ankha.8bffa26.png") +
+  draw_plot(acnh_graph)
 
 ```
 
