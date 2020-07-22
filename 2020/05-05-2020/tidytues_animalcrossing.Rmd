@@ -13,8 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(janitor)
 library(here)
-library(cowplot)
+library(cowplot) # for attaching images to pics
 library(magick)
+library(forcats)
 
 theme_set(theme_cowplot())
 ```
@@ -33,12 +34,32 @@ villagers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/
 
 Hello! Let's create a graph of villager personality types.
 
+```{r Wrangling with villager types}
+
+villager_count <- villagers %>%
+  group_by(personality) %>% # Group by personality
+  count() %>% # Count by personality
+  arrange(-n) # Arrange from most villagers to least
+
+# Change personality column to factor
+villager_fct <- villager_count %>%
+  mutate(personality = as_factor(personality))
+
+# Change factor levels to based on frequncy
+villager_by_freq <- villager_fct %>%
+  mutate(personality = fct_infreq(personality))
+
+#Check level
+levels(villager_by_freq$personality)  
+```
+
+
 ```{r}
 
 # Villager graph
-acnh_graph <- ggplot(data = villagers, aes(x = personality)) + # X variable will be personality
-  geom_histogram(aes(fill = personality), # Change fill color of bars by personality type
-                 stat = "count", # Use count as y variable
+acnh_graph <- ggplot(data = villager_by_freq, aes(x = personality, y = n)) + # X variable will be personality
+  geom_bar(aes(fill = personality), # Change fill color of bars by personality type
+                 stat = "identity", # Use count as y variable
                  show.legend = FALSE) + # Don't show legend
   labs(x = "Villager Personality", # Change axis titles
        y = "Number of Villagers",
