@@ -14,7 +14,8 @@ library(tidyverse)
 library(janitor)
 library(here)
 library(forcats) # for factor variables
-library(ggimage)
+library(cowplot)
+library(magick)
 
 theme_set(theme_cowplot())
 ```
@@ -52,15 +53,14 @@ villager_by_freq <- villager_fct %>%
 levels(villager_by_freq$personality)  
 ```
 
+```{r Villager graph}
 
-```{r}
-
-# Villager graph
-
-acnh_graph <- ggplot(data = villager_by_freq, aes(x = fct_reorder(personality,n), y = n)) + # Reorder personality (x variable) by count
+acnh_graph <- ggplot(data = villager_by_freq, 
+           aes(x = fct_reorder(personality, n), # Reorder personality (x variable) by count
+               y = n)) + 
   geom_bar(aes(fill = personality), # Change fill color of bars by personality type
-                 stat = "identity", # Use count as y variable
-                 show.legend = FALSE) + # Don't show legend
+            stat = "identity", # Use count as y variable
+            show.legend = FALSE) + # Don't show legend
   labs(x = "Villager Personality", # Change axis titles
        y = "Number of Villagers",
        title = "ACNH Villager Personalities", # Give graph title
@@ -69,6 +69,7 @@ acnh_graph <- ggplot(data = villager_by_freq, aes(x = fct_reorder(personality,n)
   geom_text(aes(label = n), # Add data labels for villager count
             color = "white", # Change font color to white
             hjust = 1.5) + # Adjust position of labels on actual bars
+  scale_y_continuous(expand = c(0, 0)) + # Extend plot to start at 0
   coord_flip() + # Flip x and y axes
   theme_classic() + # Change appearance of graph
   theme(
@@ -77,6 +78,17 @@ acnh_graph <- ggplot(data = villager_by_freq, aes(x = fct_reorder(personality,n)
   )
 
 acnh_graph
+
+```
+```{r Get a set of villager photos}
+
+ggdraw() + 
+    draw_plot(acnh_graph) +
+    draw_image(villagers$url[villagers$name == "Anchovy"], 
+               x = 0.10, 
+               y = 0.75, 
+               width = 0.12, 
+               height = 0.12)
 
 ```
 
