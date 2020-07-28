@@ -64,7 +64,8 @@ acnh_graph <- ggplot(data = villager_by_freq,
   labs(x = "Villager Personality", # Change axis titles
        y = "Number of Villagers",
        title = "ACNH Villager Personalities", # Give graph title
-       subtitle = "Which villager personality is the most popular?") + 
+       subtitle = "Which villager personality is the most abundant?",
+       caption = "Data: VillagerDB \n Viz: @GamerEarthJen") + 
   scale_fill_brewer(palette = "Dark2") + # Change fill colors of histogram bars
   geom_text(aes(label = n), # Add data labels for villager count
             color = "white", # Change font color to white
@@ -86,32 +87,32 @@ ggdraw() +
     draw_plot(acnh_graph) +
     draw_image(villagers$url[villagers$name == "Anchovy"], # Get pic for lazy villager
                x = 0.10, 
-               y = 0.75, 
+               y = 0.81, 
                width = 0.12, 
                height = 0.12) +
     draw_image(villagers$url[villagers$name == "Celia"], # Get pic for normal villager
                x = 0.10, 
-               y = 0.65, 
+               y = 0.71, 
                width = 0.12, 
                height = 0.12) +
     draw_image(villagers$url[villagers$name == "Vivian"], # Get pic for snooty villager
                x = 0.10, 
-               y = 0.57, 
+               y = 0.61, 
                width = 0.12, 
                height = 0.12) +
     draw_image(villagers$url[villagers$name == "Goose"], # Get pic for jock villager
                x = 0.10, 
-               y = 0.48, 
+               y = 0.51, 
                width = 0.12, 
                height = 0.12) +
     draw_image(villagers$url[villagers$name == "Vic"], # Get pic for cranky villager 
                x = 0.10, 
-               y = 0.39, 
+               y = 0.42, 
                width = 0.12, 
                height = 0.12) +
     draw_image(villagers$url[villagers$name == "Ketchup"], # Get pic for peppy villager
                x = 0.10, 
-               y = 0.30, 
+               y = 0.32, 
                width = 0.12, 
                height = 0.12) +
     draw_image(villagers$url[villagers$name == "Raymond"], # Get pic for smug villager
@@ -126,5 +127,10 @@ ggdraw() +
                height = 0.12)
   
 
+```
+
+```{r Save Graph}
+
+ggsave("acnh_tidytues_graph.png")
 ```
 
