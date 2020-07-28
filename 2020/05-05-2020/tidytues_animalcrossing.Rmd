@@ -84,11 +84,47 @@ acnh_graph
 
 ggdraw() + 
     draw_plot(acnh_graph) +
-    draw_image(villagers$url[villagers$name == "Anchovy"], 
+    draw_image(villagers$url[villagers$name == "Anchovy"], # Get pic for lazy villager
                x = 0.10, 
                y = 0.75, 
                width = 0.12, 
+               height = 0.12) +
+    draw_image(villagers$url[villagers$name == "Celia"], # Get pic for normal villager
+               x = 0.10, 
+               y = 0.65, 
+               width = 0.12, 
+               height = 0.12) +
+    draw_image(villagers$url[villagers$name == "Vivian"], # Get pic for snooty villager
+               x = 0.10, 
+               y = 0.57, 
+               width = 0.12, 
+               height = 0.12) +
+    draw_image(villagers$url[villagers$name == "Goose"], # Get pic for jock villager
+               x = 0.10, 
+               y = 0.48, 
+               width = 0.12, 
+               height = 0.12) +
+    draw_image(villagers$url[villagers$name == "Vic"], # Get pic for cranky villager 
+               x = 0.10, 
+               y = 0.39, 
+               width = 0.12, 
+               height = 0.12) +
+    draw_image(villagers$url[villagers$name == "Ketchup"], # Get pic for peppy villager
+               x = 0.10, 
+               y = 0.30, 
+               width = 0.12, 
+               height = 0.12) +
+    draw_image(villagers$url[villagers$name == "Raymond"], # Get pic for smug villager
+               x = 0.10, 
+               y = 0.23, 
+               width = 0.12, 
+               height = 0.12) +
+    draw_image(villagers$url[villagers$name == "Phoebe"], # Get pic for uchi villager
+               x = 0.10, 
+               y = 0.12, 
+               width = 0.12, 
                height = 0.12)
+  
 
 ```
 
