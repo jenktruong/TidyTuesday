@@ -13,9 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(janitor)
 library(here)
-library(cowplot) # for attaching images to pics
-library(magick)
-library(forcats)
+library(forcats) # for factor variables
+library(ggimage)
 
 theme_set(theme_cowplot())
 ```
@@ -57,27 +56,27 @@ levels(villager_by_freq$personality)
 ```{r}
 
 # Villager graph
-acnh_graph <- ggplot(data = villager_by_freq, aes(x = personality, y = n)) + # X variable will be personality
+
+acnh_graph <- ggplot(data = villager_by_freq, aes(x = fct_reorder(personality,n), y = n)) + # Reorder personality (x variable) by count
   geom_bar(aes(fill = personality), # Change fill color of bars by personality type
                  stat = "identity", # Use count as y variable
                  show.legend = FALSE) + # Don't show legend
   labs(x = "Villager Personality", # Change axis titles
        y = "Number of Villagers",
-       title = "ACNH Villager Personalities") + # Give graph title
+       title = "ACNH Villager Personalities", # Give graph title
+       subtitle = "Which villager personality is the most popular?") + 
   scale_fill_brewer(palette = "Dark2") + # Change fill colors of histogram bars
-  # geom_text(label = ..count..) + # Add data labels
+  geom_text(aes(label = n), # Add data labels for villager count
+            color = "white", # Change font color to white
+            hjust = 1.5) + # Adjust position of labels on actual bars
   coord_flip() + # Flip x and y axes
   theme_classic() + # Change appearance of graph
   theme(
-    plot.title = element_text(hjust = 0.5) # Move graph title to center
+    plot.title = element_text(hjust = 0.5), # Move graph title to center
+    plot.subtitle = element_text(hjust = 0.5, face = "italic") # Move subtitle to center, put in italics
   )
 
 acnh_graph
-
-# Add villager thumbnails to graph
-ggdraw() +
-  draw_image("https://villagerdb.com/images/villagers/thumb/ankha.8bffa26.png") +
-  draw_plot(acnh_graph)
 
 ```
 
