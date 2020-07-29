@@ -1,0 +1,75 @@
+---
+title: 'Tidy Tuesday: Palmer Penguins'
+author: "Jen T"
+date: "7/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Attach packages ----
+
+library(tidyverse)
+library(janitor)
+library(here)
+
+theme_set(theme_minimal())
+```
+
+```{r}
+
+# Read in data
+
+tuesdata <- tidytuesdayR::tt_load('2020-07-28')
+
+penguins <- tuesdata$penguins
+```
+
+```{r}
+
+# Compare flipper length with sex and species
+
+penguins_length <- penguins %>% 
+  drop_na() %>%
+  group_by(species, sex)
+```
+
+```{r}
+
+# Make a graph
+
+penguin_graph <- ggplot(penguins_length,
+                        aes(x = species, y = flipper_length_mm)) +
+  geom_violin(aes(fill = sex,
+                  color = sex)) + # Fill violin plots based on sex
+  labs(x = "Species",
+       y = "Flipper Length (mm)",
+       title = "Penguin Flipper Lengths based on Sex",
+       caption = "Data: Dr. Kristen Gorman \nViz: @jenjentro") +
+  scale_color_brewer(palette = "Paired") + # Change outline color of plots
+  scale_fill_brewer(palette = "Paired") + # Change fill color of plots
+  theme(
+    plot.title = element_text(color = "white",
+                              hjust = 0.5),
+    plot.background = element_rect(fill = "black"), # Change plot background color
+    plot.caption = element_text(color = "white"),
+    axis.text = element_text(color = "white"),
+    axis.title = element_text(color = "white"),
+    legend.text = element_text(color = "white"),
+    legend.title = element_text(color = "white"),
+    legend.background = element_rect(fill = "azure4"),
+    legend.position = c(.13, .82) # Place legend within plot
+  )
+
+# Show graph 
+
+penguin_graph
+```
+```{r}
+
+# Save graph
+
+ggsave("penguin_flipper.png")
+```
+
