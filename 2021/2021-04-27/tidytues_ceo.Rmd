@@ -6,25 +6,58 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+
+# Attach packages
+library(tidyverse)
+library(lubridate)
 ```
 
-## R Markdown
+```{r Read in Data}
+# Get the Data
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+# Read in with tidytuesdayR package 
+# Install from CRAN via: install.packages("tidytuesdayR")
+# This loads the readme and all the datasets for the week of interest
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+departures <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-04-27/departures.csv') %>% 
+  drop_na(leftofc, departure_code) %>% 
+  mutate(departure_code = as.character(departure_code),
+         leftofc = as_date(leftofc))
 
-```{r cars}
-summary(cars)
 ```
 
-## Including Plots
+# Data distribution
 
-You can also embed plots, for example:
+## CEO Departures by Year
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+# Let's look at departure year first
+departure_year <- departures %>% 
+  mutate(year = year(leftofc)) %>% 
+  group_by(year) %>% 
+  tally() %>% 
+  filter(year < 2022) # Why is there a year 2997? Gotta remove that
+
+# Histogram time?
+ggplot(departure_year, aes(x = year)) +
+  geom_histogram(bins = 20)
+  
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## CEO Depatures by Code
+
+```{r}
+# Let's look at departure year first
+departure_year <- departures %>% 
+  group_by(departure_code) %>% 
+  tally() 
+
+# Histogram time?
+ggplot(departure_year, aes(x = departure_code)) +
+  geom_histogram(bins = 30, stat="count")
+```
+
+# Plot
