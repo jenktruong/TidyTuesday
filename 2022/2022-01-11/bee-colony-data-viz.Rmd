@@ -86,6 +86,6 @@ colony_plot +
 ```
 
 ```{r Save graph}
-ggsave("beecolony_tidytues.png", plot = last_plot())
+#ggsave("beecolony_tidytues.png", plot = last_plot())
 ```
 
