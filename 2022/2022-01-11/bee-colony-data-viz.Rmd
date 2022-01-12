@@ -1,0 +1,91 @@
+---
+title: 'Tidy Tuesday 2022 Wk 2: Bee Colonies'
+author: "Jennifer Truong"
+date: "1/12/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+
+#Load packages
+library(tidyverse)
+library(tidytuesdayR)
+library(extrafont) #for access to more fonts!
+
+# Attach "ggbeeswarm" package for flexibility with beeswarm and ggplot functions!
+library(ggbeeswarm)
+
+# Import fonts - doesn't seem to work, never mind
+#font_import()
+#loadfonts(device = "win")
+```
+
+```{r Get data}
+tuesdata <- tidytuesdayR::tt_load('2022-01-11')
+colony <- tuesdata$colony
+stressor <- tuesdata$stressor
+```
+Let's create a subset next...maybe look at the number of colonies throughout the year 2020.
+```{r}
+colony_2020 <- colony %>%
+  filter(year == 2020, # Filter rows for the years 2020
+         state != "United States") %>% # Remove rows for the whole US
+  select(months, state, colony_n, colony_lost, colony_lost_pct) %>% # Select a few variables 
+  mutate(
+    months = str_replace(months, pattern = "January-March", "Jan-Mar"), 
+    months = str_replace(months, pattern = "April-June", "Apr-Jun"),
+    months = str_replace(months, pattern = "July-September", "Jul-Sept"),
+    months = str_replace(months, pattern = "October-December", "Oct-Dec")
+  ) # Rename month ranges for easier labeling later
+
+# Create factor level for months
+colony_2020$months <- factor(colony_2020$months, levels = c("Jan-Mar", "Apr-Jun", "Jul-Sept", "Oct-Dec"))
+```
+
+
+Time to build a beeswarm chart!
+
+```{r Create plot}
+# Create plot
+colony_plot <- ggplot(data = colony_2020,
+                      aes(x = months,
+                          y = colony_lost_pct)) +
+  geom_beeswarm(cex = 2, #increase spacing between points
+                priority = "density") + # Set point layout priority to density
+  labs(x = "Months",
+       y = "Percent Colonies Lost (%)",
+       title = "Bee Colonies Lost in 2020",
+       subtitle = "A snapshot of bee colonies lost throughout the year in the US",
+       caption = "Data: USDA \n Viz: @jenjentro \n #TidyTuesday 2022 W2")
+
+# Print plot
+colony_plot
+
+```
+
+Now it's time to make the plot look pretty!
+
+```{r Time to decorate plot}
+
+colony_plot +
+  annotate("text", x = 1.7, y = 40, 
+           size = 2.5,
+           label = "Alabama lost 48% \n of its bee colonies \n during this time!") + # Add annotation about outlier for Apr-Jun
+  annotate("segment", x = 1.85, xend = 1.95, y = 45.5, yend = 47) + # Add line from annotation to outlier
+  theme_minimal() +
+  theme(
+    plot.background = element_rect(fill = "#fdee87"),
+    panel.grid.major = element_blank(), # Remove major grid lines
+    panel.grid.minor = element_blank(), # Remove minor grid lines
+    plot.title = element_text(family = "sans", face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(family = "sans", face = "italic", hjust = 0.5)
+  )
+```
+
+```{r Save graph}
+ggsave("beecolony_tidytues.png", plot = last_plot())
+```
+

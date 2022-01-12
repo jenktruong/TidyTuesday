@@ -75,7 +75,7 @@ rplot(colony_cor)
 # How about if we pick a specific region?
 ```{r}
 # Create vectors for East Coast and West Coast states
-eastcoast = ("Maine", "New Hampshire", "Massachusetts", "Rhode Island", "Connecticut", "New York", "New Jersey", "Delaware", "Maryland", "Virginia", "North Carolina", "South Carolina", "Georgia", "Florida")
+#eastcoast = ("Maine", "New Hampshire", "Massachusetts", "Rhode Island", "Connecticut", "New York", "New Jersey", "Delaware", "Maryland", "Virginia", "North Carolina", "South Carolina", "Georgia", "Florida")
 
 # Subset states by East Coast and West Coast
 
