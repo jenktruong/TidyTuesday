@@ -1,0 +1,87 @@
+---
+title: 'TidyTuesday 2022 Week 2: Bee Colonies'
+author: "Jennifer Truong"
+date: "1/11/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+
+#Load packages
+library(tidyverse)
+library(tidytuesdayR)
+```
+
+```{r Get data}
+tuesdata <- tidytuesdayR::tt_load('2022-01-11')
+colony <- tuesdata$colony
+stressor <- tuesdata$stressor
+```
+
+Time to explore data!
+
+# Data Dictionary
+
+## colony.csv
+variable 	class 	description
+year 	character 	year
+months 	character 	month
+state 	character 	State Name (note there is United States and Other States)
+colony_n 	integer 	Number of colonies
+colony_max 	integer 	Maximum colonies
+colony_lost 	integer 	Colonies lost
+colony_lost_pct 	integer 	Percent of total colonies lost
+colony_added 	integer 	Colonies added
+colony_reno 	integer 	Colonies renovated
+colony_reno_pct 	integer 	Percent of colonies renovated
+
+## stressor.csv
+year 	character 	Year
+months 	character 	Month range
+state 	character 	State Name (note there is United States and Other States)
+stressor 	character 	Stress type
+stress_pct 	double 	Percent of colonies affected by stressors anytime during the quarter, colony can be affected by multiple stressors during same quarter.
+
+### Any interesting variables?
+Probably the colony_lost, colony_added, and colony_reno. Could have done % variables, but I wonder why there's no % variable for colony added. Maybe group the states by region for easier viewieing
+
+# Check for correlations
+```{r}
+library(corrr)
+library(corrplot)
+
+# Create subset only containing numeric variables
+colony_select <- colony %>%
+  select(colony_n, colony_max, colony_lost, colony_lost_pct, colony_added, colony_reno, colony_reno_pct)
+
+# Create correlation matrix
+colony_cor <- colony_select %>%
+  correlate()
+
+colony_cor
+```
+
+Strongest correlation seems to be between number of colonies, max number of colonies, and colonies lost. Colonies added and colonies renovated also seem to have strong correlation.
+
+## Plot correlations
+```{r}
+
+rplot(colony_cor)
+```
+
+# How about if we pick a specific region?
+```{r}
+# Create vectors for East Coast and West Coast states
+eastcoast = ("Maine", "New Hampshire", "Massachusetts", "Rhode Island", "Connecticut", "New York", "New Jersey", "Delaware", "Maryland", "Virginia", "North Carolina", "South Carolina", "Georgia", "Florida")
+
+# Subset states by East Coast and West Coast
+
+# Create correlation matrix again
+
+```
+
+# Final variables to examine
+year, state (group into region?), colony_n, colony_max, colony_lost, colony_added, colony_reno

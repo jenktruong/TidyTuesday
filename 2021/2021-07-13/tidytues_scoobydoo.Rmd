@@ -1,0 +1,30 @@
+---
+title: "Tidy Tuesday - Scooby Doo Episodes"
+author: "Jennifer Truong"
+date: "7/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+
+library(tidyverse)
+library(tidytuesdayR)
+```
+
+# Read in and explore data
+
+```{r}
+# Read in data
+tuesdata <- tidytuesdayR::tt_load('2021-07-13')
+scoobydoo <- tuesdata$scoobydoo
+```
+
+```{r}
+# Count instances of motive
+scooby_motive_count <- scoobydoo %>% 
+  count(motive)
+```
+
