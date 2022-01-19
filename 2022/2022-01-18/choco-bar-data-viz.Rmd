@@ -1,0 +1,71 @@
+---
+title: 'Tidy Tuesday 2022 Week 3: Chocolate Bar Ratings'
+author: "Jennifer Truong"
+date: "1/18/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+
+#Load packages
+library(tidyverse)
+library(tidytuesdayR)
+
+#Packages for text analysis
+library(tidytext)
+library(ggwordcloud)
+```
+
+```{r Get data}
+tuesdata <- tidytuesdayR::tt_load('2022-01-18')
+chocolate <- tuesdata$chocolate
+
+# Source: Flavors of Cacao by Georges and Kelsey
+# http://flavorsofcacao.com/chocolate_database.html
+```
+
+# Data Exploration
+
+Let's find the top quarter of the highest rated chocolate bars.
+
+```{r}
+# Determine overall quantiles
+choco_quantile <- chocolate %>%
+  summarise(
+    (enframe(quantile(rating, c(0.25, 0.5, 0.75)), "quantile", "rating"))
+  )
+
+# 25th percentile is 3.00, 50th percentile is 3.25, and 75th percentile is 3.50
+
+# Filter rows with only ratings between 3.50 to 4.00
+choco_75_quantile <- chocolate %>%
+  filter(rating >= 3.50)
+```
+
+Let's see if we can parse out each word in most_memorable_characteristics
+```{r}
+# Create vector
+mmc = choco_75_quantile$most_memorable_characteristics
+
+# Start wrangling for words!
+mmc_words <- choco_75_quantile %>%
+  summarize(
+    mmc = paste(mmc, collapse = ",") # Combine values into one cell for easier wrangling
+  ) %>%
+  mutate(
+    mmc_word = str_split(mmc, pattern = ",") # Split so that each word is in a row
+  ) %>%
+  select(mmc_word) %>% # Remove first column
+  unnest(mmc_word) %>% # Make each word its own row
+  mutate(across(where(is.character), str_trim)) # Trim white space
+
+```
+
+# Build Wordcloud Plot
+```{r}
+
+```
+
