@@ -13,10 +13,12 @@ knitr::opts_chunk$set(echo = TRUE,
 #Load packages
 library(tidyverse)
 library(tidytuesdayR)
+library(ggwordcloud) # For word cloud
+library(showtext) # for additional fonts
 
-#Packages for text analysis
-library(tidytext)
-library(ggwordcloud)
+## Loading Google fonts (https://fonts.google.com/)
+#font_add_google("Josefin Sans", "josefin")
+#font_add_google("Dosis", "dosis")
 ```
 
 ```{r Get data}
@@ -56,16 +58,58 @@ mmc_words <- choco_75_quantile %>%
     mmc = paste(mmc, collapse = ",") # Combine values into one cell for easier wrangling
   ) %>%
   mutate(
-    mmc_word = str_split(mmc, pattern = ",") # Split so that each word is in a row
+    word = str_split(mmc, pattern = ",") # Split so that each word is in a row
   ) %>%
-  select(mmc_word) %>% # Remove first column
-  unnest(mmc_word) %>% # Make each word its own row
+  select(word) %>% # Remove first column
+  unnest(word) %>% # Make each word its own row
   mutate(across(where(is.character), str_trim)) # Trim white space
 
 ```
 
 # Build Wordcloud Plot
-```{r}
 
+First, let's get a count of each word.
+
+```{r Word Count}
+# Count occurence for each word
+mmc_count <- mmc_words %>%
+  group_by(word) %>% # Group by word or phase
+  count() 
+
+# Find top 50 words used
+mmc_top50 <- mmc_count %>% 
+  arrange(-n) %>% # Arrange in descending order
+  head(50)
+  
+```
+
+Now let's create our wordcloud
+```{r}
+choco_cloud <- ggplot(data = mmc_top50,
+                    aes(label = word)) +
+  geom_text_wordcloud(aes(color = n, size = n)) +
+  scale_size_area(max_size = 11) +
+  scale_color_gradient(low = "tan3", high = "saddlebrown") +
+  labs(title = "Top 50 Memorable Qualities of Highly Rated Chocolate Bars",
+       subtitle = "A selection of the top 50 characteristics for chocolate bars with a rating of at least 3.50.",
+       caption = "Data: Flavors of Cacao \n Viz: @jenjentro \n #TidyTuesday 2022 W3") +
+  theme(
+    plot.background = element_rect(fill = "lemonchiffon"),
+    plot.title = element_text(#family = "josefin",
+                              face = "bold", 
+                              color = "saddlebrown", 
+                              size = 13,
+                              hjust = .5),
+    plot.subtitle = element_text(#family = "dosis",
+                                 face = "italic", 
+                                 color = "saddlebrown", 
+                                 size = 10, 
+                                 hjust = .5),
+    plot.caption = element_text(#family = "dosis",
+                                color = "saddlebrown"),
+    panel.background = element_rect(fill = "lemonchiffon"),
+  )
+
+choco_cloud
 ```
 
