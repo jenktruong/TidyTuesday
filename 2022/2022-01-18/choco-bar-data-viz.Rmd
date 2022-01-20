@@ -17,8 +17,14 @@ library(ggwordcloud) # For word cloud
 library(showtext) # for additional fonts
 
 ## Loading Google fonts (https://fonts.google.com/)
-#font_add_google("Josefin Sans", "josefin")
-#font_add_google("Dosis", "dosis")
+font_add_google("Josefin Sans", "josefin")
+font_add_google("Dosis", "dosis")
+
+# Open graphics device for google fonts
+op = showtext_opts(dpi = 300)
+#png("dpi_300.png", 800, 800, res = 300)
+#par(family = "josefin")
+#par(family = "dosis")
 ```
 
 ```{r Get data}
@@ -83,33 +89,40 @@ mmc_top50 <- mmc_count %>%
   
 ```
 
-Now let's create our wordcloud
+Now let's create our wordcloud.
 ```{r}
+# Start showtext package
+showtext_auto(enable = TRUE)
+
+# Create wordcloud
 choco_cloud <- ggplot(data = mmc_top50,
                     aes(label = word)) +
-  geom_text_wordcloud(aes(color = n, size = n)) +
-  scale_size_area(max_size = 11) +
+  geom_text_wordcloud(aes(color = n, size = n),
+                      perc_step = 0.05) +
+  scale_size_area(max_size = 15) +
   scale_color_gradient(low = "tan3", high = "saddlebrown") +
-  labs(title = "Top 50 Memorable Qualities of Highly Rated Chocolate Bars",
-       subtitle = "A selection of the top 50 characteristics for chocolate bars with a rating of at least 3.50.",
+  labs(title = "Top 50 Memorable Qualities \n of Highly Rated Chocolate Bars",
+       subtitle = "A selection of the top 50 characteristics for chocolate bars \n with a rating of at least 3.50.",
        caption = "Data: Flavors of Cacao \n Viz: @jenjentro \n #TidyTuesday 2022 W3") +
   theme(
     plot.background = element_rect(fill = "lemonchiffon"),
-    plot.title = element_text(#family = "josefin",
+    plot.title = element_text(family = "josefin",
                               face = "bold", 
                               color = "saddlebrown", 
-                              size = 13,
+                              size = 18,
                               hjust = .5),
-    plot.subtitle = element_text(#family = "dosis",
-                                 face = "italic", 
+    plot.subtitle = element_text(family = "dosis",
                                  color = "saddlebrown", 
-                                 size = 10, 
+                                 size = 12, 
                                  hjust = .5),
-    plot.caption = element_text(#family = "dosis",
-                                color = "saddlebrown"),
+    plot.caption = element_text(family = "dosis",
+                                color = "saddlebrown",
+                                size = 10),
     panel.background = element_rect(fill = "lemonchiffon"),
   )
 
 choco_cloud
+
+ggsave("choco-bar_tidytues.png", plot = choco_cloud, width = 6, height = 4.5, dpi = 300)
 ```
 
