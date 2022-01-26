@@ -1,0 +1,31 @@
+---
+title: 'TidyTuesday Week 4: Board Games'
+author: "Jennifer Truong"
+date: "1/25/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+
+# Load packages
+library(tidyverse)
+library(tidytuesdayR)
+
+```
+
+```{r Load data}
+tuesdata <- tidytuesdayR::tt_load('2022-01-25')
+
+ratings <- tuesdata$ratings
+details <- tuesdata$details
+```
+
+## Possible questions
+
+- How many hours of playtime did the most top rated games have?
+- Which game category is the most wished?
+- What's the correlation between rating and  playtime
+- What year had the highest rated games?
