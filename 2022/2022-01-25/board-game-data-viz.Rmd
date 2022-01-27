@@ -23,9 +23,36 @@ ratings <- tuesdata$ratings
 details <- tuesdata$details
 ```
 
-## Possible questions
+Let's explore which games are the most wished games.
 
-- How many hours of playtime did the most top rated games have?
-- Which game category is the most wished?
-- What's the correlation between rating and  playtime
-- What year had the highest rated games?
+```{r}
+# Join both tables together
+games_join <- inner_join(details, ratings, by = "id", copy = FALSE, keep = FALSE)
+
+# Create subset of top 10 wished games
+top10wish <- games_join %>%
+  select(boardgamecategory, wishing, name, year, rank, average, thumbnail) %>%
+  arrange(-wishing) %>% # in descending order
+  head(10)
+```
+
+
+```{r Create plot}
+top10wish_plot <- ggplot(top10wish,
+                         aes(x = fct_reorder(name, wishing), 
+                             y = wishing)) +
+  geom_col(fill = "navyblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Top 10 Games on the Wishlist",
+       y = "Number of people wishing",
+       subtitle = "What are the most requested board games in everyone's wishlists?",
+       caption = "Data: Kaggle \n Viz: @jenjentro \n #TidyTuesday 2022 W4") +
+  theme(
+    panel.grid = element_blank(),
+    axis.title.y = element_blank()
+  )
+
+top10wish_plot
+```
+
