@@ -13,7 +13,17 @@ knitr::opts_chunk$set(echo = TRUE,
 # Load packages
 library(tidyverse)
 library(tidytuesdayR)
+library(showtext)
 
+## Loading Google fonts (https://fonts.google.com/)
+font_add_google("Balsamiq Sans", "balsamiq")
+font_add_google("Indie Flower", "indie")
+
+# Open graphics device for google fonts if first time using fonts, comment once done
+#op = showtext_opts(dpi = 300)
+#png("dpi_300.png", 800, 800, res = 300)
+#par(family = "balsamiq")
+#par(family = "indie")
 ```
 
 ```{r Load data}
@@ -38,6 +48,8 @@ top10wish <- games_join %>%
 
 
 ```{r Create plot}
+# Start showtext package
+showtext_auto(enable = TRUE)
 
 # Let's create a lollipop chart
 top10wish_plot <- ggplot(top10wish,
@@ -53,35 +65,47 @@ top10wish_plot <- ggplot(top10wish,
   geom_point(size = 5,
              shape = 8, # asterisk shape
              color = "gold2") +
-  scale_y_continuous(expand=c(0,0)) + # Expand to origin
+  scale_y_continuous(lim = c(0, 20000),
+                     expand = c(0,0)) + # Expand to origin
   coord_flip() +
   theme_light() +
   labs(title = "I Wish for a Board Game...",
        y = "Number wishing",
        subtitle = "What are the most requested board games in a wishlist?",
-       caption = "Data: Kaggle\n Viz: @jenjentro\n #TidyTuesday 2022 W4") +
+       caption = "Data: BoardGameGeek\n Viz: @jenjentro\n #TidyTuesday 2022 W4") +
   theme(
     plot.background = element_rect(fill = "navyblue"),
-    plot.title = element_text(face = "bold",
+    plot.title = element_text(family = "balsamiq",
+                              face = "bold",
                               color = "white",
-                              size = 18,
+                              size = 20,
                               hjust = .5),
-    plot.subtitle = element_text(face = "italic",
+    plot.subtitle = element_text(family = "indie",
+                                 face = "italic",
                                  color = "white",
-                                 size = 10, 
+                                 size = 14, 
                                  hjust = .5),
-    plot.caption = element_text(color = "white",
-                                size = 10),
+    plot.caption = element_text(family = "indie",
+                                color = "white",
+                                size = 12),
     panel.background = element_rect(fill = "navyblue"),
     panel.border = element_blank(),
     panel.grid = element_blank(),
     axis.title.y = element_blank(),
-    axis.title.x = element_text(face = "bold",
-                                color = "lightgoldenrod2"),
-    axis.text = element_text(color = "lightgoldenrod1",
-                             size = 10)
+    axis.title.x = element_text(family = "balsamiq",
+                                face = "bold",
+                                color = "lightgoldenrod2",
+                                size = 13),
+    axis.text = element_text(family = "indie",
+                             color = "lightgoldenrod1",
+                             size = 12)
   )
 
 top10wish_plot
+```
+
+```{r Save plot}
+ggsave("board-game_tidytues.png", plot = top10wish_plot, width = 8, height = 5, dpi = 300)
+
 ```
 
