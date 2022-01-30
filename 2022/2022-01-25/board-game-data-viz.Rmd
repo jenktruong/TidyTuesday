@@ -38,19 +38,48 @@ top10wish <- games_join %>%
 
 
 ```{r Create plot}
+
+# Let's create a lollipop chart
 top10wish_plot <- ggplot(top10wish,
                          aes(x = fct_reorder(name, wishing), 
                              y = wishing)) +
-  geom_col(fill = "navyblue") +
+  geom_segment(aes(x = fct_reorder(name, wishing),
+                   xend = fct_reorder(name, wishing), 
+                   y = 0,
+                   yend = wishing),
+               color = "gold4",
+               linetype = 2, # dashed lines
+               size = 1)+
+  geom_point(size = 5,
+             shape = 8, # asterisk shape
+             color = "gold2") +
+  scale_y_continuous(expand=c(0,0)) + # Expand to origin
   coord_flip() +
-  theme_minimal() +
-  labs(title = "Top 10 Games on the Wishlist",
-       y = "Number of people wishing",
-       subtitle = "What are the most requested board games in everyone's wishlists?",
-       caption = "Data: Kaggle \n Viz: @jenjentro \n #TidyTuesday 2022 W4") +
+  theme_light() +
+  labs(title = "I Wish for a Board Game...",
+       y = "Number wishing",
+       subtitle = "What are the most requested board games in a wishlist?",
+       caption = "Data: Kaggle\n Viz: @jenjentro\n #TidyTuesday 2022 W4") +
   theme(
+    plot.background = element_rect(fill = "navyblue"),
+    plot.title = element_text(face = "bold",
+                              color = "white",
+                              size = 18,
+                              hjust = .5),
+    plot.subtitle = element_text(face = "italic",
+                                 color = "white",
+                                 size = 10, 
+                                 hjust = .5),
+    plot.caption = element_text(color = "white",
+                                size = 10),
+    panel.background = element_rect(fill = "navyblue"),
+    panel.border = element_blank(),
     panel.grid = element_blank(),
-    axis.title.y = element_blank()
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(face = "bold",
+                                color = "lightgoldenrod2"),
+    axis.text = element_text(color = "lightgoldenrod1",
+                             size = 10)
   )
 
 top10wish_plot
