@@ -16,6 +16,9 @@ Finalized visualizations can be found on my [Twitter](https://twitter.com/jenjen
 
 ### 2022
 
+2022-01-25: Board Games
+![lollipop plot showing the top 10 most wished board games](/2022/2022-01-25/board-game_tidytues.png)
+
 2022-01-18: Chocolate Bars
 ![chocolate bar characteristic word cloud](/2022/2022-01-18/choco-bar_tidytues.png)
 
