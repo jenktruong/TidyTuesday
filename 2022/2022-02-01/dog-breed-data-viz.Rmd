@@ -13,7 +13,8 @@ knitr::opts_chunk$set(echo = TRUE,
 #Load packages
 library(tidyverse)
 library(tidytuesdayR)
-library(ggwordcloud) # For word cloud
+library(ggradar) # For radar plots
+library(janitor) # For easier data cleaning
 library(showtext) # for additional fonts
 
 ## Loading Google fonts (https://fonts.google.com/)
@@ -34,5 +35,43 @@ library(showtext) # for additional fonts
 breed_traits <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-01/breed_traits.csv')
 trait_description <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-01/trait_description.csv')
 breed_rank_all <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-01/breed_rank.csv')
+```
+
+# Data Exploration
+
+Let's look at the top 10 ranked dogs for 2020 by looking at breed_rank_all
+
+```{r Create subset}
+breedtop10 <- breed_rank_all %>%
+  clean_names() %>% # Change attribute names to lower case for easier coding
+  select(breed, x2020_rank, links, image) %>% # Select 2020 column and other non-rank columns
+  head(10) # Keep only top 10 rows
+
+```
+
+The top 10 are:
+ [1] "Retrievers (Labrador)"         "French Bulldogs"              
+ [3] "German Shepherd Dogs"          "Retrievers (Golden)"          
+ [5] "Bulldogs"                      "Poodles"                      
+ [7] "Beagles"                       "Rottweilers"                  
+ [9] "Pointers (German Shorthaired)" "Dachshunds" 
+ 
+Then let's try to join this subset with breed_traits using a left join. (Edit: there was an issue with the join.)
+
+```{r Subset trait table}
+# Change attribute names in breed_traits to lower case as well
+breed_traits_clean <- breed_traits %>%
+  clean_names() %>%
+  head(10) # Look at top 10 rows
+
+# Something is causing "Retrievers (Labrador)", "French Bulldogs", "German Shepherd Dogs", "Retrievers (Golden)", and "Pointers (German Shorthaired)" to not join properly
+
+# I commented out the code for joining tables, unless a solution comes by somehow
+
+# Join tables
+#breedtop10_join <- left_join(breedtop10, 
+                             #breed_traits_clean, 
+                             #by = "breed")
+
 ```
 
