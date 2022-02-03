@@ -13,7 +13,8 @@ knitr::opts_chunk$set(echo = TRUE,
 #Load packages
 library(tidyverse)
 library(tidytuesdayR)
-library(ggradar) # For radar plots
+library(ggradar) # for radar plot
+library(scales) 
 library(janitor) # For easier data cleaning
 library(showtext) # for additional fonts
 
@@ -29,7 +30,6 @@ library(showtext) # for additional fonts
 ```
 
 ```{r Load data}
-# Get the Data
 # Had to read in manually this week
 
 breed_traits <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-01/breed_traits.csv')
@@ -38,8 +38,6 @@ breed_rank_all <- readr::read_csv('https://raw.githubusercontent.com/rfordatasci
 ```
 
 # Data Exploration
-
-Let's look at the top 10 ranked dogs for 2020 by looking at breed_rank_all
 
 ```{r Create subset}
 breedtop10 <- breed_rank_all %>%
@@ -55,14 +53,22 @@ The top 10 are:
  [5] "Bulldogs"                      "Poodles"                      
  [7] "Beagles"                       "Rottweilers"                  
  [9] "Pointers (German Shorthaired)" "Dachshunds" 
- 
-Then let's try to join this subset with breed_traits using a left join. (Edit: there was an issue with the join.)
+
 
 ```{r Subset trait table}
 # Change attribute names in breed_traits to lower case as well
 breed_traits_clean <- breed_traits %>%
   clean_names() %>%
-  head(10) # Look at top 10 rows
+  head(10) %>% # Look at top 10 rows
+  select(breed, openness_to_strangers:mental_stimulation_needs) %>% # Remove the two non-numeric columns besides breed
+  rename("Open to Strangers" = "openness_to_strangers",
+         "Playful" = "playfulness_level",
+         "Protective" = "watchdog_protective_nature",
+         "Adaptive" = "adaptability_level",
+         "Trainable" = "trainability_level",
+         "Energetic" = "energy_level",
+         "Bark" = "barking_level",
+         "Mental Needs" = "mental_stimulation_needs") # Rename for easier labeling
 
 # Something is causing "Retrievers (Labrador)", "French Bulldogs", "German Shepherd Dogs", "Retrievers (Golden)", and "Pointers (German Shorthaired)" to not join properly
 
@@ -74,4 +80,46 @@ breed_traits_clean <- breed_traits %>%
                              #by = "breed")
 
 ```
+
+Okay let's create our radar plots for the top 10 breeds now!
+
+```{r}
+# Rescale data first
+breed_traits_clean %>%
+  mutate_at(vars(-breed), rescale) %>%
+  rename("group" = "breed")
+ 
+# Create plot
+breed_radar <- breed_traits_clean %>%
+  ggradar(
+    grid.min = 1, grid.mid = 3, grid.max = 5,
+    values.radar = c("1", "3","5"),
+    grid.label.size = 4,
+    axis.label.size = 4,
+    group.line.width = 1,
+    group.point.size = 1.5,
+    group.colours = "navyblue"
+  ) +
+  facet_wrap(vars(group), ncol = 5) + # Facet wrap by breed
+  labs(title = "Meet America's Most Popular Doggos",
+       subtitle = "Personality traits of the top 10 dogs based on 2020 rankings.",
+       caption = "Data: American Kennel Club\n Viz: @jenjentro\n #TidyTuesday 2022 W5") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold",
+                              size = 20,
+                              hjust = .5),
+    plot.subtitle = element_text(face = "italic",
+                                 size = 14, 
+                                 hjust = .5),
+    plot.caption = element_text(size = 12),
+    strip.background = element_rect(fill = "navyblue", color = NULL),
+    strip.text = element_text(color = "white"),
+    legend.position="none"
+  )
+
+# View plot
+breed_radar
+```
+
 
