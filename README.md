@@ -16,6 +16,9 @@ Finalized visualizations can be found on my [Twitter](https://twitter.com/jenjen
 
 ### 2022
 
+2022-02-01: Dog Breeds
+![radar plots of personality traits for top 10 dog breeds in 2020](/2022/2022-02-01/dog-breed-radar-plot.png)
+
 2022-01-25: Board Games
 ![lollipop plot showing the top 10 most wished board games](/2022/2022-01-25/board-game_tidytues.png)
 

@@ -117,7 +117,7 @@ breed_radar <- breed_traits_clean %>%
     strip.text = element_text(face = "bold",
                               color = "white",
                               margin = margin(5, 5, 5, 5),
-                              size = 10),
+                              size = 8),
     legend.position="none"
   )
 
@@ -126,6 +126,6 @@ breed_radar
 ```
 
 ```{r Save plot}
-ggsave("dog-breed-radar-plot.png", plot = breed_radar, height = 5, width = 11)
+ggsave("dog-breed-radar-plot.png", plot = breed_radar, height = 5, width = 10.5)
 ```
 
