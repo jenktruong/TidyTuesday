@@ -13,11 +13,46 @@ knitr::opts_chunk$set(echo = TRUE,
 #Load packages
 library(tidyverse)
 library(tidytuesdayR)
+library(janitor)
+library(lubridate)
 ```
 
 ```{r Load data}
 tuesdata <- tidytuesdayR::tt_load('2022-02-08')
 
 airmen <- tuesdata$airmen
+```
+```{r Data wrangling}
+
+airmen_rank <- airmen %>%
+  # Rename rank at graduation column
+  rename("rank" = "rank_at_graduation") %>%
+  # Parse graduation date column
+  mutate(
+    year = year(graduation_date),
+    month = month(graduation_date),
+    day = day(graduation_date)
+  ) %>%
+  mutate(
+    rank = replace(rank, rank == "Capt", "Captain"),
+    rank = replace(rank, rank %in% c("Unk", "N/A"), NA)
+  ) %>%
+  # Filter out ranks that are unknown or NA
+  drop_na(year, rank) %>%
+  # Group data by year and rank
+  group_by(year, rank) %>%
+  # Count rows for each group
+  count()
+
+```
+
+```{r Create plot}
+airmen_plot <- ggplot(airmen_rank,
+                      aes(x = year, y = n)) +
+  geom_line(aes(color = rank)) +
+  theme_minimal()
+
+# View plot
+airmen_plot
 ```
 
