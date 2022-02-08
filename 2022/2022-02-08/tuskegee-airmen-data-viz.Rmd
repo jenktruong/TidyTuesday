@@ -1,0 +1,23 @@
+---
+title: 'Tidy Tuesday 2022 Week 6: Tuskegee Airmen'
+author: "Jennifer Truong"
+date: "2/8/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+
+#Load packages
+library(tidyverse)
+library(tidytuesdayR)
+```
+
+```{r Load data}
+tuesdata <- tidytuesdayR::tt_load('2022-02-08')
+
+airmen <- tuesdata$airmen
+```
+
