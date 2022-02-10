@@ -15,6 +15,12 @@ library(tidyverse)
 library(tidytuesdayR)
 library(janitor)
 library(lubridate)
+library(showtext)
+
+# Load fonts 
+font_add_google("Public Sans","public")
+# Automatically turn on {showtext}
+showtext_auto()
 ```
 
 ```{r Load data}
@@ -46,13 +52,46 @@ airmen_rank <- airmen %>%
 
 ```
 
-```{r Create plot}
+```{r Create plot, fig.width=2.25, fig.height=3}
 airmen_plot <- ggplot(airmen_rank,
                       aes(x = year, y = n)) +
-  geom_line(aes(color = rank)) +
-  theme_minimal()
+  # Use different line types to show rank
+  geom_line(aes(linetype = rank),
+            size = 1) +
+  # Expand x-axis to origin
+  scale_x_continuous(expand = c(0,0)) +
+  # Flip axes
+  coord_flip() +
+  labs(title = "TUSKEGEE AIRMEN",
+       subtitle = "RANK AT GRADUATION BY YEAR",
+       y = "NUMBER OF GRADUATES",
+       caption = "VIZ: @JENJENTRO | DATA: CAF (COMMEMORATIVE AIR FORCE) | #TIDYTUESDAY") +
+  theme(
+    text = element_text(family = "public"),
+    plot.title = element_text(face = "bold",
+                              size = 20,
+                              hjust = 0.5),
+    plot.subtitle = element_text(size = 14,
+                                 hjust = 0.5),
+    plot.caption = element_text(size = 10),
+    plot.background = element_rect(fill="#fde4d0"),
+    panel.background = element_rect(fill="#fde4d0"),
+    panel.grid = element_line(color = "#f08c96"),
+    axis.title.x = element_text(size = 13),
+    axis.title.y = element_blank(),
+    axis.text = element_text(size = 11),
+    legend.title = element_blank(),
+    legend.background = element_rect(fill="#fde4d0"),
+    legend.key = element_rect(fill="#fde4d0"),
+    legend.position = "bottom"
+  )
 
 # View plot
 airmen_plot
+```
+
+```{r Save plot}
+ggsave("tuskegee-line-graph.png", plot = airmen_plot, width = 5.5, height = 7, dpi = 100)
+
 ```
 
