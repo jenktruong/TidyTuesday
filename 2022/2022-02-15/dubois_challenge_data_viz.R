@@ -26,6 +26,19 @@ us_boundary <- read_sf(here("2022", "2022-02-15","tl_2017_us_state"),
 us_black_pop <- left_join(us_boundary, population, by = "state") %>%
   drop_na(population)
 
+# Factor population groups
+pop_levels = c("750,000 AND OVER", "600,000 - 750,000", 
+               "500,000 - 600,000", "300,000 - 500,000",
+               "200,000 - 300,000", #"100,000 - 200,000",
+               "50,000 - 100,000", "25,000 - 50,000", 
+               "10,000 - 25,000", "UNDER - 10,000")
+
+us_black_pop$population <- factor(us_black_pop$population,
+                                  levels = pop_levels)
+
+# Create vector for color scheme
+pop_colors <- c("#fffff") 
+
 # Draw map
 ggplot() +
   geom_sf(data = us_black_pop,
