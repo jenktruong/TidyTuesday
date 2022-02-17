@@ -16,7 +16,7 @@ Finalized visualizations can be found on my [Twitter](https://twitter.com/jenjen
 
 ### 2022
 
-2022-02-08: #DuBoisChallenge2020
+2022-02-08: #DuBoisChallenge2022
 ![recreation of Challenge 3 from this year's DuBois Challenge: map of relative Black population in US](/2022/2022-02-15/dubois-map.png)
 
 2022-02-08: Tuskegee Airmen
