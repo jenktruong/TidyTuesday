@@ -18,3 +18,12 @@ sports_NCAA_track <- sports %>%
   filter(classification_name %in% c("NCAA Division I-FCS", "NCAA Division I-FBS"), 
          sports %in% c("Track and Field, Outdoor", "Track and Field, Indoor", "Track and Field, X-Country")) #%>% 
   #drop_na(rev_men, rev_women, exp_men, exp_women)
+
+# Plot
+ggplot() +
+  geom_line(data = sports_NCAA_track,
+            aes(x = year, y = rev_men),
+            color = "blue") +
+  geom_line(data = sports_NCAA_track,
+            aes(x = year, y = rev_women),
+            color = "red")
