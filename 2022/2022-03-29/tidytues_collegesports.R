@@ -26,7 +26,7 @@ sports_track_2019 <- sports %>%
   ) %>%
   # Ignore NA values
   drop_na(rev_men, rev_women, exp_men, exp_women) %>%
-  # Pivot to long  to keep expense and revenue amounts to one column
+  # Pivot to long  to keep expenditures and revenue amounts to one column
   pivot_longer(cols = c(rev_men, rev_women, exp_men, exp_women),
                names_to = c("category", "gender"),
                # Define name pattern for splitting columns
@@ -34,7 +34,7 @@ sports_track_2019 <- sports %>%
                values_to = "dollars")
 
 
-#  Find average revenue and expenses, then find net income ----
+#  Find average revenue and expenditures, then find net income ----
 sports_net_inc <- sports_track_2019 %>%
   group_by(sports, category, gender) %>%
   summarize(
@@ -92,7 +92,7 @@ ggplot(sports_net_inc,
             size = 3.5) +
   scale_fill_manual(values = c("#8BB8E8", "#FFC72C"))	+
   labs(title = "How Profitable Was US Collegiate Track and Field in 2019?",
-       subtitle = "Here we examine the mean net income (revenue minus expenses) for each track and field event type for men and women throughout the country in 2019.",
+       subtitle = "Here we examine the mean net income (revenue minus expenditures) for each track and field event type for men and women throughout the country in 2019.",
        caption = "Data: Equity in Athletics | Viz: @jenjentro | #TidyTuesday 2022 W13",
        x = "Track and Field Event Type",
        y = "Net Income ($)") +
