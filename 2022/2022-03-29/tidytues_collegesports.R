@@ -58,7 +58,7 @@ showtext_auto()
 indoor_text = data.frame(
   x = 1.75,
   y = -1500,
-  label = "Both men's and women's \nindoor events faced net \nlosses of at least $2000."
+  label = "Both men's and women's \nindoor events faced mean net \nlosses of at least $2000."
 )
 
 # Find difference between men's and women's outdoor event net income
@@ -68,7 +68,7 @@ outdoor_pct_diff = (outdoor_diff/sports_net_inc$net_income[3])*100 # 71.796565..
 outdoor_text = data.frame(
   x = 1.25,
   y = 2250,
-  label = "The net income for \nmen's outdoor events \nwas 71.8% higher than \nwomen's outdoor events."
+  label = "The mean net income for \nmen's outdoor events \nwas 71.8% higher than \nwomen's outdoor events."
 )
 
 
@@ -92,7 +92,7 @@ ggplot(sports_net_inc,
             size = 3.5) +
   scale_fill_manual(values = c("#8BB8E8", "#FFC72C"))	+
   labs(title = "How Profitable Was US Collegiate Track and Field in 2019?",
-       subtitle = "Here we examine the net income (revenue minus expenses) for each track and field event type for men and women throughout the country in 2019.",
+       subtitle = "Here we examine the mean net income (revenue minus expenses) for each track and field event type for men and women throughout the country in 2019.",
        caption = "Data: Equity in Athletics | Viz: @jenjentro | #TidyTuesday 2022 W13",
        x = "Track and Field Event Type",
        y = "Net Income ($)") +
