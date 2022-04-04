@@ -34,19 +34,13 @@ sports_track_2019 <- sports %>%
                values_to = "dollars")
 
 
-#  Find average revenue and expenditures, then find net income ----
-sports_net_inc <- sports_track_2019 %>%
+#  Find average revenue ----
+track_rev <- sports_track_2019 %>%
   group_by(sports, category, gender) %>%
   summarize(
     average_dollars = mean(dollars)
   ) %>%
-  # Pivot back to wide 
-  pivot_wider(names_from = category,
-              values_from = average_dollars) %>%
-  # Add new column to calculate net income
-  mutate(
-    net_income = rev - exp
-  )
+  filter(category == "rev")
 
 
 # Add fonts ----
@@ -54,48 +48,19 @@ font_add_google("Roboto Slab", "roboto")
 showtext_auto()
 
 
-# Create captions ----
-indoor_text = data.frame(
-  x = 1.75,
-  y = -1500,
-  label = "Both men's and women's \nindoor events faced mean net \nlosses of at least $2000."
-)
-
-# Find difference between men's and women's outdoor event net income
-outdoor_diff = sports_net_inc$net_income[3] - sports_net_inc$net_income[4]
-outdoor_pct_diff = (outdoor_diff/sports_net_inc$net_income[3])*100 # 71.796565...
-
-outdoor_text = data.frame(
-  x = 1.25,
-  y = 2250,
-  label = "The mean net income for \nmen's outdoor events \nwas 71.8% higher than \nwomen's outdoor events."
-)
-
-
 # Plot ----
-ggplot(sports_net_inc,
-       aes(x = sports, y = net_income)) +
+ggplot(track_rev,
+       aes(x = sports, y = average_dollars)) +
   geom_col(aes(fill = gender),
            position = "dodge") +
-  geom_hline(yintercept = 0, size = 1) +
-  # Caption for indoor track
-  geom_text(data = indoor_text, 
-            aes(x = x, y = y, label = label),
-            color = "white",
-            fontface = "bold",
-            size = 3.5) +
-  # Caption for outdoor track
-  geom_text(data = outdoor_text, 
-            aes(x = x, y = y, label = label),
-            color = "white",
-            fontface = "bold",
-            size = 3.5) +
+  scale_y_continuous(expand = c(0,0),
+                     limits = c(0, 80000)) +
   scale_fill_manual(values = c("#8BB8E8", "#FFC72C"))	+
-  labs(title = "How Profitable Was US Collegiate Track and Field in 2019?",
-       subtitle = "Here we examine the mean net income (revenue minus expenditures) for each track and field event type for men and women throughout the country in 2019.",
+  labs(title = "US Collegiate Track and Field Revenue in 2019",
+       subtitle = "How much did different track and field events throughout US colleges make on average in 2019? \nCross-country (X-country) made the least revenue for both men and women.",
        caption = "Data: Equity in Athletics | Viz: @jenjentro | #TidyTuesday 2022 W13",
        x = "Track and Field Event Type",
-       y = "Net Income ($)") +
+       y = "Average Revenue ($)") +
   theme_classic() +
   theme(
     text = element_text(family = "roboto", 
