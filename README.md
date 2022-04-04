@@ -16,6 +16,9 @@ Finalized visualizations can be found on my [Twitter](https://twitter.com/jenjen
 
 ### 2022
 
+2022-03-29: Collegiate Sports Budgets
+![bar graphs of US track and field revenue in 2019](/2022/2022-03-29/tidytues_collegiate_sports.png)
+
 2022-03-22: Baby Names
 ![line graph of popularity of the baby name 'Jennifer'](/2022/2022-03-22/tidytues_babynames.png)
 
