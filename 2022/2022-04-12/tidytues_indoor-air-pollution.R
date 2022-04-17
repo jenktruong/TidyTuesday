@@ -41,19 +41,37 @@ joined_data <- full_join(fuel_access, indoor_pollution_tidy,
          "death_pct" = "deaths_cause_all_causes_risk_household_air_pollution_from_solid_fuels_sex_both_age_age_standardized_percent") %>%
   mutate(continent = countrycode(code, "iso3c", "continent"),
          year = as.integer(year)) %>%
-  drop_na(continent)
+  drop_na(continent, clean_fuel_pct)
 
 # Load fonts ----
-#font_add_google("actualfont", "nickname")
+font_add_google("Mukta", "mukta") # For title
 showtext_auto()
+
+# Set colors for continents
+continent_color = c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854")
 
 # Plot ----
 ggplot(joined_data,
        aes(x = clean_fuel_pct, y = death_pct)) +
-  geom_point() +
+  geom_point(aes(fill = continent, line = continent),
+             size = 4,
+             alpha = 0.5,
+             show.legend = FALSE) +
+  scale_fill_manual(values = continent_color,
+                    aesthetics = c("color", "fill")) +
   facet_wrap(~continent) +
+  theme_classic() +
+  theme(
+    text = element_text(family = "mukta"),
+    plot.title = element_text(face = "bold",
+                              size = 14,
+                              hjust = .5),
+    plot.subtitle = element_text(size = 12,
+                                 hjust = .5),
+    plot.caption = element_text(size = 10)
+  ) +
   # Adding in gganimate
-  labs(title = 'Global Indoor Air Pollution', 
+  labs(title = 'Clean Fuel Access vs Global Indoor \nAir Pollution Deaths', 
        subtitle = 'Year: {frame_time}',
        caption = "Data: OurWorldinData.org | Viz: @jenjentro | #TidyTuesday 2022 W15",
        x = 'Access to clean fuels for cooking (%)', 
