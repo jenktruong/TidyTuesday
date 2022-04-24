@@ -47,7 +47,7 @@ ggplot(times_join,
   geom_col(aes(fill = sentiment),
            position = "dodge") +
   labs(title = 'New York Times Crossword Sentiment Analysis', 
-       subtitle = 'Negative sentiment seems to dominate the Times crossword puzzle answers between 2014-2021. \nThe Bing sentiment lexicon was used for this analysis.',
+       subtitle = 'Negative sentiment seems to dominate the Times crossword puzzle answers between 2014-2021.',
        caption = "Data: Cryptic Crossword Clues | Viz: Jennifer Truong | #TidyTuesday 2022 W16",
        x = 'Year', 
        y = 'No. of Answers') +
@@ -65,3 +65,7 @@ ggplot(times_join,
     panel.grid = element_blank(),
     legend.position = c(.1,.75)
   )
+
+# Save plot ----
+ggsave(here("2022", "2022-04-19", "times_crossword_sentiment.png"), 
+       plot = last_plot())
