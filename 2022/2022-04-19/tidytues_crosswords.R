@@ -63,8 +63,9 @@ ggplot(times_join,
     plot.caption = element_text(size = 12,
                                 hjust = 1),
     panel.grid = element_blank(),
+    legend.key.size = unit(0.3, 'cm'),
     legend.position = c(.1,.75)
-  )
+  ) 
 
 # Save plot ----
 ggsave(here("2022", "2022-04-19", "times_crossword_sentiment.png"), 
