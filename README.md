@@ -16,6 +16,9 @@ Finalized visualizations can be found on my [Twitter](https://twitter.com/jenjen
 
 ### 2022
 
+2022-04-19: Crossword Puzzle
+![barplot of sentiment analysis on NYT crossword puzzle answers](/2022/2022-04-19/times_crossword_sentiment.png)
+
 2022-04-05: Digital Publications
 ![circular barplot of news topics covered by local publications that serve underrepresented communities](/2022/2022-04-05/underrep_topics_plot.png)
 
