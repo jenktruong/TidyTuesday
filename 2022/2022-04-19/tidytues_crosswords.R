@@ -44,14 +44,13 @@ showtext_auto()
 # Plot ----
 ggplot(times_join,
        aes(x = year, y = n)) +
-  geom_col(aes(fill = sentiment),
-           position = "dodge") +
+  geom_line(aes(color = sentiment)) +
   labs(title = 'New York Times Crossword Sentiment Analysis', 
        subtitle = 'Negative sentiment seems to dominate the Times crossword puzzle answers between 2014-2021.',
        caption = "Data: Cryptic Crossword Clues | Viz: Jennifer Truong | #TidyTuesday 2022 W16",
        x = 'Year', 
        y = 'No. of Answers') +
-  scale_fill_manual(values = c("#CD5C5C", "#3498db")) +
+  scale_color_manual(values = c("#CD5C5C", "#3498db")) +
   theme_bw() +
   theme(
     text = element_text(family = "domine"),
@@ -68,5 +67,5 @@ ggplot(times_join,
   ) 
 
 # Save plot ----
-ggsave(here("2022", "2022-04-19", "times_crossword_sentiment.png"), 
+ggsave(here("2022", "2022-04-19", "times_crossword_sentiment_line.png"), 
        plot = last_plot())
