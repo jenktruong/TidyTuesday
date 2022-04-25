@@ -17,7 +17,7 @@ Finalized visualizations can be found on my [Twitter](https://twitter.com/jenjen
 ### 2022
 
 2022-04-19: Crossword Puzzles
-![barplot of sentiment analysis on NYT crossword puzzle answers](/2022/2022-04-19/times_crossword_sentiment.png)
+![line graph of sentiment analysis on NYT crossword puzzle answers](/2022/2022-04-19/times_crossword_sentiment_line.png)
 
 2022-04-12: Indoor Air Pollution
 ![animated scatterplot of air pollution deaths and access to clean fuels](/2022/2022-04-12/ndoor_air_pollution.gif)
