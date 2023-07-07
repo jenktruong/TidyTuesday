@@ -43,7 +43,7 @@ ggplot(hist_markers_df,
        color = "#422d07") +
   geom_line() + 
   labs(title = 'Historical Markers in the US', 
-       subtitle = 'How many historical markers have been added throughout the United States?\n(Any years with a significantly high number of markers have been noted.)',
+       subtitle = 'How many historical markers have been added throughout the United States?',
        caption = 'Data: Historical Marker Database | Viz: @jenktruong | #TidyTuesday 2023 W27',
        x = 'Year', 
        y = 'No. of Historical Markers') +
@@ -86,4 +86,4 @@ ggplot(hist_markers_df,
   )
 
 # Save plot ----
-ggsave(here("2023", "2023-07-06", "tidytues_historicalmarkers.png"), plot = last_plot())
+ggsave(here("2023", "2023-07-04", "tidytues_historicalmarkers.png"), plot = last_plot())
