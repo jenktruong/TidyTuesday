@@ -5,14 +5,19 @@ This is my TidyTuesday GitHub repo where I store my visualizations and code for 
 ## Contents
 
 - TidyTuesday R project file (TidyTuesday.Rproj)
-- folder for each year: 2020, 2021, 2022
+- folder for each year (2020, 2021, etc.)
 	- subfolders for respective weeks in ISO format (ie. 2022-01-11)
-		- R Markdowns for data exploration and data visualization
+		- R Markdowns or scripts for data wrangling and visualization
 		- PNGs for final graphs
 
-Finalized visualizations can be found on my [Twitter](https://twitter.com/jenjentro).
+Finalized visualizations can be found on my [Twitter](https://twitter.com/jenktruong).
 
 ## Data Visualizations
+
+### 2023
+
+2022-07-04: US Historical Markers
+![line graph of sentiment analysis on NYT crossword puzzle answers](/2023/2023-07-04/tidytues_historicalmarkers.png)
 
 ### 2022
 
@@ -20,7 +25,7 @@ Finalized visualizations can be found on my [Twitter](https://twitter.com/jenjen
 ![line graph of sentiment analysis on NYT crossword puzzle answers](/2022/2022-04-19/times_crossword_sentiment_line.png)
 
 2022-04-12: Indoor Air Pollution
-![animated scatterplot of air pollution deaths and access to clean fuels](/2022/2022-04-12/ndoor_air_pollution.gif)
+![animated scatterplot of air pollution deaths and access to clean fuels](/2022/2022-04-12/indoor_air_pollution.gif)
 
 2022-04-05: Digital Publications
 ![circular barplot of news topics covered by local publications that serve underrepresented communities](/2022/2022-04-05/underrep_topics_plot.png)
