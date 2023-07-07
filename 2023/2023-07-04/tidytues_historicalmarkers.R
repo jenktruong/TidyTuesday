@@ -21,8 +21,9 @@ no_markers <- tuesdata$`no_markers`
  
 hist_markers_df <- historical_markers %>% 
   select(marker_id, year_erected, city_or_town, state_or_prov) %>% 
-  group_by(state_or_prov, year_erected) %>% 
-  count()
+  remove_missing() %>% # remove NAs
+  group_by(year_erected) %>% 
+  count() 
 
 # Load fonts ----
 # font_add_google("actualfont", "nickname")
@@ -31,6 +32,12 @@ hist_markers_df <- historical_markers %>%
 # Show plot ----
 ggplot(hist_markers_df,
        aes(x = year_erected, y = n)) +
-  geom_line(aes(color = state_or_prov))
+  geom_line() + 
+  labs(title = 'Historical Markers Added in the US', 
+       subtitle = 'how many historical markers have been added throughout the United States?',
+       caption = 'Data: Historical Marker Database | Viz: @jenktruong | #TidyTuesday 2023 W27',
+       x = 'Year', 
+       y = 'No. of Historical Markers') +
+  theme_classic()
 
 # Save plot ----
