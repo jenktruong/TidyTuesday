@@ -4,12 +4,24 @@
 # Jennifer Truong
 #####
 
-# Load packages ----
+# Inspiration for this plot: USGS Vizlab
+# https://waterdata.usgs.gov/blog/ggplot-jazz/
+
+# Load the usual packages ----
 library(tidyverse)
 library(tidytuesdayR)
 library(janitor)
 library(here)
 library(showtext)
+
+# Additional packages to load:
+library(cowplot)
+library(grid)
+library(remotes)
+library(waffle)
+
+# Install waffle using `remotes`
+# remotes::install_github("hrbrmstr/waffle")
 
 # Load dataset ----
 tuesdata <- tidytuesdayR::tt_load(2023, week = 28)
