@@ -15,6 +15,7 @@ library(here)
 library(showtext)
 
 # Additional packages to load:
+library(lubridate)
 library(cowplot)
 library(grid)
 library(remotes)
@@ -30,3 +31,19 @@ global_temps <- tuesdata$global_temps
 nh_temps <- tuesdata$nh_temps
 sh_temps <- tuesdata$sh_temps
 zonann_temps <- tuesdata$zonann_temps
+
+# Data wrangling ----
+
+# We'll be looking at seasonal surface temperatures for Northern Hemisphere
+# Dec-Jan-Feb (DJF) = N.H. meteorological winter
+# Mar-Apr-May (MAM) = N.H. meteorological spring
+# Jun-Jul-Aug (JJA) = N.H. meteorological summer
+# Sep-Oct-Nov (SON) = N.H. meteorological autumn
+
+nh_season_temp <- nh_temps %>% 
+  clean_names() %>% # Change column names to lower case
+  select(year, djf, mam, jja, son) # Only get year and seasonal columns only
+
+# Add fonts ----
+font_add_google("Mulish", "mulish")
+showtext_auto()
