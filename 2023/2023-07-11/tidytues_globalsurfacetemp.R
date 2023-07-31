@@ -81,7 +81,7 @@ plot_margin <- 0.05
 
 # Main plot
 plot_nh_temp <- ggplot(nh_season_temp,
-                       aes(x = year, y = temp)) +
+                       aes(values = year, fill = temp)) +
   geom_waffle(color = "white", size = 1.125, n_rows = 10, 
               make_proportional = TRUE,
               stat = "identity", na.rm = TRUE) +
@@ -90,10 +90,9 @@ plot_nh_temp <- ggplot(nh_season_temp,
   coord_equal(clip = "off") + 
   scale_x_discrete(expand = c(0,0)) +
   scale_y_discrete(expand = c(0,0)) +
-  scale_fill_manual(values = c('#36161a', "#b54a56","#e9c9cc"), 
-                    breaks = c('high', 'moderate', 'low'), 
-                    labels = c("High", "Moderate", "Low"),
-                    name = NULL) +
+  scale_fill_gradient2(
+                       na.value = "grey50",
+                       guide = "colourbar") +
   labs(title = "Northern Hemisphere Surface Temperatures",
        subtitle = "Looking at global surface temperatures in the Northern Hemishere over time by year",
        x = "Year",
