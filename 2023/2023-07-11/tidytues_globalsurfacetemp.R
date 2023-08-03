@@ -19,7 +19,6 @@ library(lubridate)
 library(cowplot)
 library(grid)
 library(remotes)
-library(waffle)
 
 # Install waffle using `remotes`
 # remotes::install_github("hrbrmstr/waffle")
@@ -40,6 +39,7 @@ zonann_temps <- tuesdata$zonann_temps
 # Jun-Jul-Aug (JJA) = N.H. meteorological summer
 # Sep-Oct-Nov (SON) = N.H. meteorological autumn
 
+# Create new subset
 nh_season_temp <- nh_temps %>% 
   clean_names() %>% 
   select(year, djf, mam, jja, son) %>% 
@@ -47,7 +47,7 @@ nh_season_temp <- nh_temps %>%
   pivot_longer(
     cols = djf:son,
     names_to = "season",
-    values_to = "temp"
+    values_to = "temp_var"
   ) %>% 
   # Create new columns with season name
   mutate(
@@ -58,6 +58,13 @@ nh_season_temp <- nh_temps %>%
       season == "son" ~ "Fall"
     )
   )
+
+# Summarize each variable in new data frame
+summary(nh_season_temp)
+
+# Things to note:
+# 3 NAs in mean variation (temp) column
+# Median variation is 0.00; mean variation is 0.09295. Will probably use median as midpoint for gradient
 
 # Add fonts ----
 font_add_google("Mulish", "mulish")
@@ -81,22 +88,18 @@ plot_margin <- 0.05
 
 # Main plot
 plot_nh_temp <- ggplot(nh_season_temp,
-                       aes(values = year, fill = temp)) +
-  geom_waffle(color = "white", size = 1.125, n_rows = 10, 
-              make_proportional = TRUE,
-              stat = "identity", na.rm = TRUE) +
-  facet_wrap(~factor(season_name, 
-                     levels = c("Winter", "Spring", "Summer", "Fall"))) +
+                       aes(x = year, y = temp_var)) +
+  geom_line() +
   coord_equal(clip = "off") + 
+  facet_wrap(~factor(season_name, 
+                    levels = c("Winter", "Spring", "Summer", "Fall"))) +
   scale_x_discrete(expand = c(0,0)) +
   scale_y_discrete(expand = c(0,0)) +
-  scale_fill_gradient2(
-                       na.value = "grey50",
-                       guide = "colourbar") +
+  scale_fill_viridis_b() +
   labs(title = "Northern Hemisphere Surface Temperatures",
        subtitle = "Looking at global surface temperatures in the Northern Hemishere over time by year",
        x = "Year",
-       y = "Deviations from 1951-1980 means") #+
+       y = "Mean Temp Variation") #+
   # theme() +
   # guides(fill = guide_legend(title.position = "top"))
 
